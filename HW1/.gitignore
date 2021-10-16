@@ -1,0 +1,6 @@
+*.ipynb
+
+tmp.*
+
+tmp/
+.ipynb_checkpoints/

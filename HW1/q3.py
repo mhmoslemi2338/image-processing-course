@@ -8,22 +8,18 @@ import os
 def find_crop(image):
     h = image.shape[0]
     avg = 0
-    for i in range(-100, 100):
+    for i in range(-50, 50):
         avg += np.average(image[int(h / 2) + i, :])
-    avg = avg / 200
+    avg = avg / 100
     up, down, left, right = 0, 0, 0, 0
     for i in range(300):
-        if np.average(image[-i, :]) / \
-                avg < 0.6 or np.average(image[-i, :]) / avg > 1.4:
+        if np.average(image[-i, :]) / avg < 0.6 or np.average(image[-i, :]) / avg > 1.4:
             down = i
-        if np.average(image[i, :]) / \
-                avg < 0.6 or np.average(image[i, :]) / avg > 1.4:
+        if np.average(image[i, :]) / avg < 0.6 or np.average(image[i, :]) / avg > 1.4:
             up = i
-        if np.average(image[:, i]) / \
-                avg < 0.6 or np.average(image[:, i]) / avg > 1.4:
+        if np.average(image[:, i]) /  avg < 0.6 or np.average(image[:, i]) / avg > 1.4:
             left = i
-        if np.average(image[:, -i]) / \
-                avg < 0.6 or np.average(image[:, -i]) / avg > 1.4:
+        if np.average(image[:, -i]) / avg < 0.6 or np.average(image[:, -i]) / avg > 1.4:
             right = i
     return [up, down, left, right]
 

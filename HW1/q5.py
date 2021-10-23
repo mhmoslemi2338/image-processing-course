@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import timeit
+import scipy.signal
 
 
 def shift(image, tx, ty):
@@ -15,8 +16,13 @@ def shift(image, tx, ty):
 img = cv2.imread('Pink.jpg')
 start = timeit.default_timer()
 
-img2 = cv2.boxFilter(img, ksize=(3, 3), normalize=True, ddepth=-1)
-res = img2[1:-1, 1:-1, :]
+
+kernel=np.ones((3,3))
+res=img[1:-1,1:-1,:].copy()
+res[:,:,0]=(scipy.signal.convolve2d(img[:,:,0],kernel,mode='valid'))/9
+res[:,:,1]=(scipy.signal.convolve2d(img[:,:,1],kernel,mode='valid'))/9
+res[:,:,2]=(scipy.signal.convolve2d(img[:,:,2],kernel,mode='valid'))/9
+res=np.uint8(res)
 
 stop = timeit.default_timer()
 print('Run-Time for method one : %0.4f sec' % (stop - start))

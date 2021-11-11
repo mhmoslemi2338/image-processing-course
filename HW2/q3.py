@@ -27,9 +27,9 @@ def apply_homography(image, pnt):
 
 image = cv2.imread('books.jpg')
 
-pnt1 = np.array([[385, 105], [317, 288], [601, 394], [666, 209]])
-pnt2 = np.array([[410, 469], [205, 427], [153, 709], [363, 741]])
-pnt3 = np.array([[622, 667], [420, 795], [609, 1100], [813, 968]])
+pnt1 = np.array([[385, 105], [317, 288], [601, 394], [666, 209]]) # graph theory book
+pnt2 = np.array([[410, 469], [205, 427], [153, 709], [363, 741]]) # DFT book
+pnt3 = np.array([[622, 667], [420, 795], [609, 1100], [813, 968]]) # image science book
 
 
 [res1, H1] = apply_homography(image, pnt1)

@@ -78,8 +78,12 @@ def main(name_in, name_out):
     im2 = img[h_:2 * h_, :]
     im3 = img[2 * h_:3 * h_, :]
 
-    im1 = scipy.ndimage.shift(im1, find_shift(im2, im1))
-    im3 = scipy.ndimage.shift(im3, find_shift(im2, im3))
+
+    s21= find_shift(im2, im1)
+    s23= find_shift(im2, im3)
+
+    im1 = scipy.ndimage.shift(im1, s21)
+    im3 = scipy.ndimage.shift(im3, s23)
 
     tmp = np.array([find_crop(im1), find_crop(im2), find_crop(im3)])
     [up, down, left, right] = np.max(tmp, axis=0)
@@ -92,6 +96,10 @@ def main(name_in, name_out):
     out = (out / 256).astype('uint8')
 
     cv2.imwrite(name_out, out)
+    print('for image '+name_in)
+    print( 'shift for blue to fit on green : ',s21)
+    print( 'shift for red to fit on green : ',s23)
+    print("\n")
 
 
 main('master-pnp-prok-01800-01886a.tif', 'res03-Amir.jpg')

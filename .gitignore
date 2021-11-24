@@ -1,0 +1,16 @@
+*.ipynb
+HW1_97102463_moslemi/
+HW1_97102463_moslemi.zip
+tmp.*
+
+tmp/
+HW2_nima/
+*.zip
+*.rar
+.ipynb_checkpoints/
+
+uncle.py
+
+*autopep8.sh
+
+debug.log

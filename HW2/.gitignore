@@ -12,3 +12,5 @@ uncle.py
 
 *.sh
 q2_report_img/
+
+autopep8.sh

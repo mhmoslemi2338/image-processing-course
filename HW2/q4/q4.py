@@ -33,6 +33,8 @@ def my_save(img, name):
     plt.close(fig)
 
 
+#### calibrate input images
+
 near = cv2.imread('res19-near.jpg')
 far = cv2.imread('res20-far.jpg')
 
@@ -40,8 +42,7 @@ far = cv2.imread('res20-far.jpg')
 eye_far = np.array([[143, 208], [224, 208]])
 eye_near = np.array([[150, 219], [250, 219]])
 
-scale = np.linalg.norm(eye_near[0] - eye_near[1]) / \
-    np.linalg.norm(eye_far[0] - eye_far[1])
+scale = np.linalg.norm(eye_near[0] - eye_near[1]) / np.linalg.norm(eye_far[0] - eye_far[1])
 (h, w) = far.shape[:-1]
 dim = (int(scale * w), int(scale * h))
 far = cv2.resize(far, dim)
@@ -66,6 +67,9 @@ for i in range(base.shape[0]):
 near = base
 cv2.imwrite('res21-near.jpg', near)
 cv2.imwrite('res22-far.jpg', far)
+
+
+#### DFT of each  channel and apply filter #####
 
 DFT_near = np.array([np.fft.fftshift(np.fft.fft2(near[:, :, 0])),
                      np.fft.fftshift(np.fft.fft2(near[:, :, 1])),
@@ -94,6 +98,8 @@ LPF_far_3d = np.array([LPF_far,
 
 filtered_near = np.multiply(DFT_near, HPF_near_3d)
 filtered_far = np.multiply(DFT_far, LPF_far_3d)
+
+##### add two DFT and do IDFT ##### 
 
 l = 0.6
 result_DFT = np.add(l * filtered_near, (1 - l) * filtered_far)

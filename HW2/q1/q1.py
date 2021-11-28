@@ -106,12 +106,7 @@ img_sharp3 = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
 cv2.imwrite('res08.jpg', normalize(np.log10(np.abs(value_FFT) + 0.001)))
 cv2.imwrite('res09.jpg', normalize(HPF))
-cv2.imwrite(
-    'res10.jpg',
-    normalize(
-        np.log10(
-            np.abs(filtered_value_FFT) +
-            0.001)))
+cv2.imwrite('res10.jpg',normalize(np.log10(np.abs(filtered_value_FFT) +0.001)))
 cv2.imwrite('res11.jpg', img_sharp3)
 
 
@@ -144,11 +139,7 @@ img_hsv[:, :, 2] = normalize((value + 0.0000005 * value_filtered))
 img_sharp4 = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
 
 
-cv2.imwrite(
-    'res12.jpg',
-    normalize(
-        np.log10(
-            np.abs(value_FFT_filtered) +
-            0.001)))
+cv2.imwrite('res12.jpg',normalize(np.log10(np.abs(value_FFT_filtered) +0.001)))
 cv2.imwrite('res13.jpg', normalize(value_filtered))
 cv2.imwrite('res14.jpg', img_sharp4)
+

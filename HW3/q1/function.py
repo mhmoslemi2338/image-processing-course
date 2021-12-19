@@ -19,6 +19,7 @@ def hough_space(im):
     edge = cv2.Canny(gray, threshold1=70, threshold2=110)
     edge_h, edge_w = edge.shape
     d = int(np.sqrt(edge_h**2 + edge_w**2))
+    
     thetas = np.linspace(-np.pi, np.pi, 360)
     rhos = np.linspace(-d, d, 2 * d)
     accumulator = np.zeros([len(rhos), len(thetas)])
@@ -108,36 +109,6 @@ def select_parallel_lines(in_lines, th=2):
     return lines_out
 
 
-def find_chess_lines(img, lines_in):
-    linef = []
-    lines_in_mb = make_mb(lines_in)
-    for k, row in enumerate(lines_in_mb):
-        mask_up = np.uint8(np.zeros(img.shape))
-        mask_down = np.uint8(np.zeros(img.shape))
-        [m, b] = [row[0], row[1]]
-        x = np.arange(int(img.shape[1] * 0.4), int(img.shape[1] * 0.9))
-        y = (np.int64(m * x + b)).tolist()
-        x = x.tolist()
-        for i in range(len(x)):
-            if not int(img.shape[1] * 0.4) < y[i] < int(img.shape[1] * 0.8):
-                continue
-            try:
-                margin = 35
-                if margin < x[i] < img.shape[0] - margin and margin < y[i] < img.shape[0] - margin:
-                    mask_down[y[i] - margin:y[i], x[i] - margin:x[i],:] = img[y[i] - margin:y[i], x[i] - margin:x[i], :]
-                    mask_up[y[i] - margin:y[i], x[i] - margin:x[i],:] = img[y[i]:y[i] + margin, x[i]:x[i] + margin, :]
-            except BaseException:
-                pass
-        mask_down = cv2.cvtColor(mask_down, cv2.COLOR_BGR2GRAY)
-        mask_up = cv2.cvtColor(mask_up, cv2.COLOR_BGR2GRAY)
-        res1 = cv2.matchTemplate(mask_down, mask_up, cv2.TM_CCOEFF_NORMED)
-        res2 = cv2.matchTemplate(mask_up, mask_down, cv2.TM_CCOEFF_NORMED)
-        res = (res1[0][0] + res2[0][0]) / 2
-        if 0.53 < res < 0.78:
-            linef.append(lines_in[k])
-    return linef
-
-
 def draw_line(im, lines, thick=2):
     img = cv2.resize(im.copy(), (np.min(im.shape[0:2]), np.min(im.shape[0:2])))
     for row in lines:
@@ -166,3 +137,32 @@ def intersection(img, line_in):
                 if 0 < xi < img.shape[0] and 0 < yi < img.shape[0]:
                     points.append([int(xi), int(yi)])
     return np.int64(avg_near_line(points, 0.04, 0.04))
+
+def find_chess_lines(img, lines_in):
+    linef = []
+    lines_in_mb = make_mb(lines_in)
+    for k, row in enumerate(lines_in_mb):
+        mask_up = np.uint8(np.zeros(img.shape))
+        mask_down = np.uint8(np.zeros(img.shape))
+        [m, b] = [row[0], row[1]]
+        x = np.arange(int(img.shape[1] * 0.4), int(img.shape[1] * 0.9))
+        y = (np.int64(m * x + b)).tolist()
+        x = x.tolist()
+        for i in range(len(x)):
+            if not int(img.shape[1] * 0.4) < y[i] < int(img.shape[1] * 0.8):
+                continue
+            try:
+                margin = 35
+                if margin < x[i] < img.shape[0] - margin and margin < y[i] < img.shape[0] - margin:
+                    mask_down[y[i] - margin:y[i], x[i] - margin:x[i],:] = img[y[i] - margin:y[i], x[i] - margin:x[i], :]
+                    mask_up[y[i] - margin:y[i], x[i] - margin:x[i],:] = img[y[i]:y[i] + margin, x[i]:x[i] + margin, :]
+            except BaseException:
+                pass
+        mask_down = cv2.cvtColor(mask_down, cv2.COLOR_BGR2GRAY)
+        mask_up = cv2.cvtColor(mask_up, cv2.COLOR_BGR2GRAY)
+        res1 = cv2.matchTemplate(mask_down, mask_up, cv2.TM_CCOEFF_NORMED)
+        res2 = cv2.matchTemplate(mask_up, mask_down, cv2.TM_CCOEFF_NORMED)
+        res = (res1[0][0] + res2[0][0]) / 2
+        if 0.53 < res < 0.78:
+            linef.append(lines_in[k])
+    return linef

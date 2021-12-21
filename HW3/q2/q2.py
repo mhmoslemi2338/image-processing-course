@@ -42,9 +42,9 @@ def main(name,output_size=2500,block_size=150,overlap=40):
                 margin1_left=blank[i_v[0]:i*block_size-(i-1)*overlap,i_h[0]:i_h[1],:].copy()
 
                 patch1=np.zeros([block_size,block_size,3])
-                mask=patch1.copy()
-                mask[:overlap,:,:]=255
-                mask[:,:overlap,:]=255
+                mask=np.zeros([block_size,block_size])
+                mask[:overlap,:]=255
+                mask[:,:overlap]=255
 
                 patch1[:overlap,:,:]=margin1_up.copy()
                 patch1[:,:overlap,:]=margin1_left.copy()
@@ -67,18 +67,23 @@ def main(name,output_size=2500,block_size=150,overlap=40):
 
 
 
-[synthes2, original2] = main('texture02.png', output_size=2500, block_size=150, overlap=40)
+[synthes2, original2] = main('texture02.png', output_size=2500, block_size=150, overlap=70)
 res2 = cv2.hconcat([original2, synthes2])
 cv2.imwrite('res11.jpg', res2)
 
-[synthes6, original6] = main('texture06.jpg', output_size=2500, block_size=150, overlap=40)
+[synthes6, original6] = main('texture05.jpg', output_size=2500, block_size=150, overlap=70)
 res6 = cv2.hconcat([original6, synthes6])
 cv2.imwrite('res12.jpg', res6)
 
-[synthes3, original3] = main('Textture_sample_3.jpg', output_size=2500, block_size=150, overlap=40)
+[synthes3, original3] = main('Textture_sample_3.jpg', output_size=2500, block_size=150, overlap=70)
 res3 = cv2.hconcat([original3, synthes3])
 cv2.imwrite('res13.jpg', res3)
 
-[synthes4, original4] = main('Textture_sample_4.jpg', output_size=2500, block_size=150, overlap=40)
+[synthes4, original4] = main('Textture_sample_4.jpg', output_size=2500, block_size=150, overlap=70)
 res4 = cv2.hconcat([original4, synthes4])
 cv2.imwrite('res14.jpg', res4)
+
+
+
+
+

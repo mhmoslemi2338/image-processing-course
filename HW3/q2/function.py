@@ -2,16 +2,20 @@ import numpy as np
 import cv2
 
 
-def random_patch(img, patch, block_size, overlap, mask_bool=False, mask=0):
+def random_patch(img, patch, block_size, overlap, mask_bool=False, mask=0 ):
     patch_gray = cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)
     (h, w, _) = img.shape
     img_gray = cv2.cvtColor(
         img[:h - (block_size - overlap), :w - (block_size - overlap), :], cv2.COLOR_BGR2GRAY)
     if not mask_bool:
         res = cv2.matchTemplate(img_gray,patch_gray,cv2.TM_CCOEFF_NORMED)  # normalized cross-cor
+        tmp = (np.argsort(res.reshape(-1)))
+
     else:
-        res = cv2.matchTemplate(img_gray,patch_gray,cv2.TM_CCOEFF_NORMED,mask)  # normalized cross-cor
-    tmp = (np.argsort(res.reshape(-1)))
+        res = cv2.matchTemplate(img_gray,patch_gray,cv2.TM_SQDIFF,mask=mask)  # normalized cross-cor
+        tmp = np.flip(np.argsort(res.reshape(-1)))
+
+
     top_left = np.flip((np.unravel_index(tmp, res.shape))).T
     pre = np.array([0, 0])
     good = []
@@ -20,7 +24,7 @@ def random_patch(img, patch, block_size, overlap, mask_bool=False, mask=0):
             tmp1 = np.min(np.abs(np.array(good) - pre), axis=0)
             tmp = np.min(np.sum(np.power(np.array(good) - row, 2), axis=1))
             pre = row
-            if tmp < 50 or tmp1[0] < 3 or tmp1[0] < 3:
+            if tmp < 30 or tmp1[0] < 3 or tmp1[0] < 3:
                 continue
         pre = row
         good.append(row)
@@ -29,7 +33,6 @@ def random_patch(img, patch, block_size, overlap, mask_bool=False, mask=0):
     top_left = (good[0]).tolist()
     patch2 = img[top_left[1]:top_left[1] + block_size,top_left[0]:top_left[0] + block_size, :]
     return patch2
-
 
 def min_cut_path(margin1_gray, margin2_gray):
     errors = np.power(margin1_gray - margin2_gray, 2)

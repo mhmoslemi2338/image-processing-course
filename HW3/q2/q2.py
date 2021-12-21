@@ -58,23 +58,27 @@ def main(name,output_size=2500,block_size=150,overlap=40):
                 blank[i_v[0]:i*block_size-(i-1)*overlap,i_h[0]:i_h[1],:]=(patch_combined_left)
                 blank[i_v[0]:i_v[1],i_h[0]:j*block_size-(j-1)*overlap,:]=(patch_combined_up)
             except: break
-    blank=blank[0:2500,0:2500,:]
-    original=np.uint8(np.ones([2500,2500,3])*255)
-    original[2500//2-h//2:2500//2-h//2+h,2500//2-w//2:2500//2-w//2+w,:]=img
+    blank=blank[0:output_size,0:output_size,:]
+    original=np.uint8(np.ones([output_size,output_size,3])*255)
+    original[output_size//2-h//2:output_size//2-h//2+h,output_size//2-w//2:output_size//2-w//2+w,:]=img
+
 
     return [blank , original]
 
 
 
+[synthes2, original2] = main('texture02.png', output_size=2500, block_size=150, overlap=40)
+res2 = cv2.hconcat([original2, synthes2])
+cv2.imwrite('res11.jpg', res2)
 
-[synthes2,original2]=main('texture02.png',output_size=2500,block_size=150,overlap=40)
-res2=cv2.hconcat([original2,synthes2])
-cv2.imwrite('res11.jpg',res2)
+[synthes6, original6] = main('texture06.jpg', output_size=2500, block_size=150, overlap=40)
+res6 = cv2.hconcat([original6, synthes6])
+cv2.imwrite('res12.jpg', res6)
 
+[synthes3, original3] = main('Textture_sample_3.jpg', output_size=2500, block_size=150, overlap=40)
+res3 = cv2.hconcat([original3, synthes3])
+cv2.imwrite('res13.jpg', res3)
 
-[synthes6,original6]=main('texture06.jpg',output_size=2500,block_size=150,overlap=40)
-res6=cv2.hconcat([original6,synthes6])
-cv2.imwrite('res12.jpg',res6)
-
-
-
+[synthes4, original4] = main('Textture_sample_4.jpg', output_size=2500, block_size=150, overlap=40)
+res4 = cv2.hconcat([original4, synthes4])
+cv2.imwrite('res14.jpg', res4)

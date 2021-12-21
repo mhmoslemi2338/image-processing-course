@@ -12,7 +12,7 @@ def random_patch(img, patch, block_size, overlap, mask_bool=False, mask=0 ):
         tmp = (np.argsort(res.reshape(-1)))
 
     else:
-        res = cv2.matchTemplate(img_gray,patch_gray,cv2.TM_SQDIFF,mask=mask)  # normalized cross-cor
+        res = cv2.matchTemplate(img_gray,patch_gray,cv2.TM_SQDIFF,mask=mask)  
         tmp = np.flip(np.argsort(res.reshape(-1)))
 
 

@@ -62,7 +62,7 @@ for label in np.unique(labels_fz.ravel()):
     for i in range(4):
         if  range_accept[i][0] < np.average(response[i][mask]) < range_accept[i][1]:
             accepted[i].append(label)
-                   
+
 birds = set.intersection(set(accepted[0]),set(accepted[1]),set(accepted[2]),set(accepted[3]))
 
 

@@ -25,7 +25,9 @@ uncle.py
 *.sh
 q3_tmp.py
 debug.log
+report/
 q4_sadra.py
+q5_sadra.py
 lung.png
 birds2.jpg
 tmp2.jpg

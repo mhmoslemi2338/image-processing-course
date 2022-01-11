@@ -3,6 +3,7 @@ HW1_97102463_moslemi/
 tmp.*
 __pycache__/
 
+ImageProcessing(Kamali)/
 acc/
 chess/
 chess2/
@@ -24,3 +25,8 @@ uncle.py
 *.sh
 q3_tmp.py
 debug.log
+q4_sadra.py
+lung.png
+birds2.jpg
+tmp2.jpg
+Q4_sadra/

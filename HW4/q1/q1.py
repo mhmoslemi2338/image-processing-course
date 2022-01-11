@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 def kmean(k,arr):
     epsilon=0.0001
-    index=np.random.randint(0,len(arr),k)
+    index=np.random.choice(np.arange(0,len(arr)),k ,replace=False)
     centers=arr[index]
     while True:
         clusters=np.zeros((k,0)).tolist()

@@ -41,6 +41,7 @@ for rnd,k in enumerate(K):
             idx=tmp[0][1]
             dx,dy=x[idx]-2,y[idx]-2
             centroids[i]=(row[0]+dx , row[1]+dy)
+    centroids=np.int64(centroids)
 
     ### make feature vector #####
     feature = (np.zeros((H,W,5)))
@@ -50,7 +51,6 @@ for rnd,k in enumerate(K):
 
     dis_mat=np.full(img_gray.shape,10000000)
     label = (-1)*np.ones(img_gray.shape)
-    centroids=np.int64(centroids)
     while(True):
         flag=True
         for index,center in enumerate(centroids,start=1):
